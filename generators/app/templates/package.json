@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "dev": "nodemon ./bin/www",
     "start": "node ./bin/www",
     "pretest": "eslint . --fix",
     "knex": "knex"
@@ -17,6 +18,7 @@
     "knex": "^0.13.0",
     "morgan": "~1.7.0",
     "objection": "^0.8.3",
+    "passport-local": "^1.0.0",
     "pg": "^6.4.0",
     "serve-favicon": "~2.3.2"
   },
@@ -26,6 +28,7 @@
     "eslint-plugin-import": "^2.5.0",
     "eslint-plugin-node": "^5.0.0",
     "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "eslint-plugin-standard": "^3.0.1",
+    "nodemon": "^1.11.0"
   }
 }

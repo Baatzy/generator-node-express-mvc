@@ -23,4 +23,4 @@ module.exports = {
       directory: path.join('db', 'seeds')
     }
   }
-};
+}
