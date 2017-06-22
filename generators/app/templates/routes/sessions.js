@@ -2,9 +2,12 @@ var express = require('express')
 var router = express.Router()
 const passport = require('passport')
 
-/* GET users listing. */
+router.get('/login', (req, res) => {
+  res.render('session/login', { user: (req.user || {}) })
+})
+
 router.post('/login', passport.authenticate('local'), (req, res) => {
-  res.json({ user: req.user })
+  res.render('session/login', { user: req.user })
 })
 
 module.exports = router
