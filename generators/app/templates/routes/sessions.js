@@ -1,34 +1,20 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
-const { User } = require('../models')
+const { sessions: ctrl } = require('../controllers')
 
-router.get('/login', (req, res) => {
-  res.render('sessions/login')
-})
+router.get('/login', ctrl.login)
+router.get('/logout', ctrl.logout)
+router.get('/signup', ctrl.signup)
 
-router.post('/login',
-  passport.authenticate('local',
-    { successRedirect: '/profile', successFlash: true, failureRedirect: '/login', failureFlash: true }))
+const authenticateOptions = {
+  successRedirect: '/profile',
+  successFlash: true,
+  failureRedirect: '/login',
+  failureFlash: true
+}
 
-router.get('/logout', (req, res) => {
-  req.logout()
-  res.redirect('/login')
-})
-
-router.get('/signup', (req, res) => {
-  res.render('sessions/signup')
-})
-
-router.post('/signup', (req, res, next) => {
-  const { email, password } = req.body
-  User.save({ email, password })
-    .then(user => next())
-    .catch((err) => {
-      req.flash('error', err.message)
-      res.redirect('/signup')
-    })
-}, passport.authenticate('local',
-  { successRedirect: '/profile', successFlash: true, failureRedirect: '/login', failureFlash: true }))
+router.post('/login', passport.authenticate('local', authenticateOptions))
+router.post('/signup', ctrl.register, passport.authenticate('local', authenticateOptions))
 
 module.exports = router
