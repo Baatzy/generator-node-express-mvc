@@ -1,14 +1,8 @@
-var express = require('express')
-var path = require('path')
-var favicon = require('serve-favicon')
-var logger = require('morgan')
-var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')
+if (process.env.NODE_ENV !== 'production') { require('dotenv').load() }
 
-var index = require('./routes/index')
-var sessions = require('./routes/sessions')
-
-var app = express()
+const express = require('express')
+const path = require('path')
+const app = express()
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -16,12 +10,20 @@ app.set('view engine', 'ejs')
 app.use(require('express-partials')())
 
 // uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
-app.use(logger('dev'))
+app.use(require('serve-favicon')(path.join(__dirname, 'public', 'favicon.ico')))
+app.use(require('morgan')('dev'))
+
+const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(cookieParser())
-app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }))
+
+app.use(require('cookie-parser')())
+app.use(require('express-session')({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}))
+
 app.use(express.static(path.join(__dirname, 'public')))
 
 const auth = require('./lib/auth')
@@ -30,18 +32,19 @@ const passport = auth.init()
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use('/', index)
+// routes
+const sessions = require('./routes/sessions')
 app.use('/', sessions)
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   var err = new Error('Not Found')
   err.status = 404
   next(err)
 })
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
