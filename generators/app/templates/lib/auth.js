@@ -10,11 +10,12 @@ module.exports.init = () => {
   }, (email, password, cb) => {
     User.findByEmail(email)
       .then(user => {
-        if (!user) return cb(null, false)
+        const msg = { message: 'Email or Password is incorrect' }
+        if (!user) return cb(null, false, msg)
 
         return bcrypt.compare(password, user.password)
-          .then(() => cb(null, user))
-          .catch(() => cb(null, false))
+          .then(() => cb(null, user, { message: 'Welcome!' }))
+          .catch(() => cb(null, false, msg))
       })
       .catch(cb)
   }))

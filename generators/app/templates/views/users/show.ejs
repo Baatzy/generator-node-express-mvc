@@ -1,0 +1,16 @@
+<div class="container users-show">
+  <div class="row align-items-center justify-content-md-center">
+    <div class="col">
+      <%- include('../shared/success') %>
+      <%- include('../shared/error') %>
+      <div class="card">
+        <div class="card-block">
+          <h1 class="display-4">
+            <strong>Welcome</strong>, <%= user.email %>
+          </h1>
+          <p>You created your account on: <%= user.created_at %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

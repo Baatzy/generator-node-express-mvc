@@ -23,7 +23,7 @@ app.use(require('express-session')({
   resave: false,
   saveUninitialized: false
 }))
-
+app.use(require('req-flash')())
 app.use(express.static(path.join(__dirname, 'public')))
 
 const auth = require('./lib/auth')
@@ -34,11 +34,14 @@ app.use(passport.session())
 
 // routes
 const sessions = require('./routes/sessions')
+const users = require('./routes/users')
 app.use((req, res, next) => {
+  res.locals.messages = req.flash()
   res.locals.user = req.user || {}
   next()
 })
 app.use('/', sessions)
+app.use('/', users)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
