@@ -33,6 +33,8 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // routes
+const bouncer = require('connect-ensure-login')
+const index = require('./routes/index')
 const sessions = require('./routes/sessions')
 const users = require('./routes/users')
 app.use((req, res, next) => {
@@ -40,8 +42,9 @@ app.use((req, res, next) => {
   res.locals.user = req.user || {}
   next()
 })
+app.use('/', index)
 app.use('/', sessions)
-app.use('/', users)
+app.use('/', bouncer.ensureAuthenticated('/login'), users)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
