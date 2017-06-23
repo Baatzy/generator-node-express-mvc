@@ -34,6 +34,10 @@ app.use(passport.session())
 
 // routes
 const sessions = require('./routes/sessions')
+app.use((req, res, next) => {
+  res.locals.user = req.user || {}
+  next()
+})
 app.use('/', sessions)
 
 // catch 404 and forward to error handler
