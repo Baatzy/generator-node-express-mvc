@@ -9,13 +9,71 @@ module.exports = class extends Generator {
     this.log(yosay(
       'Welcome to the ' + chalk.red('node-express-mvc') + ' generator!'
     ))
+
+    const dasherize = (name) => name.toLowerCase().split(' ').join('-')
+
+    return this.prompt([
+      {
+        type: 'input',
+        name: 'name',
+        message: 'Your project name',
+        default: dasherize(this.appname)
+      },
+      {
+        type: 'confirm',
+        name: 'eslint',
+        message: 'Add .eslintrc with StandardJS?',
+        default: true
+      },
+      {
+        type: 'input',
+        name: 'db',
+        message: 'Database name',
+        default: dasherize(this.appname)
+      }
+    ]).then(props => {
+      this.props = props
+      this.props.appName = dasherize(props.name)
+      this.props.db = dasherize(props.db.name).replace('-', '_')
+    })
   }
 
   writing () {
-    this.fs.copy(
-      this.templatePath('**/*'),
-      this.destinationPath('example/.')
+    this.fs.copyTpl(
+      this.templatePath('bin/www'),
+      this.destinationPath(`bin/www`),
+      { appName: this.props.appName }
     )
+
+    const paths = [
+      'controllers', 'db', 'lib', 'models', 'public', 'routes', 'views',
+      '.example.env', '.gitignore', 'app.js', 'yarn.lock'
+    ]
+    paths.forEach(path => {
+      this.fs.copy(
+        this.templatePath(path),
+        this.destinationPath(`${path}`)
+      )
+    })
+
+    this.fs.copyTpl(
+      this.templatePath('knexfile.js'),
+      this.destinationPath(`knexfile.js`),
+      { db: this.props.db }
+    )
+
+    this.fs.copyTpl(
+      this.templatePath('package.json'),
+      this.destinationPath(`package.json`),
+      { appName: this.props.appName }
+    )
+
+    if (this.props.eslint) {
+      this.fs.copy(
+        this.templatePath('.eslint*'),
+        this.destinationPath(`.`)
+      )
+    }
   }
 
   install () {

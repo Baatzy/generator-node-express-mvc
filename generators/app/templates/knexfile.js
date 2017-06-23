@@ -1,4 +1,4 @@
-const database = 'example_application'
+const database = '<%= db %>'
 const path = require('path')
 
 module.exports = {
