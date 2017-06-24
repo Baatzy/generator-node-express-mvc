@@ -5,7 +5,6 @@ const yosay = require('yosay')
 
 module.exports = class extends Generator {
   prompting () {
-    // Have Yeoman greet the user.
     this.log(yosay(
       'Welcome to the ' + chalk.red('node-express-mvc') + ' generator!'
     ))
@@ -47,7 +46,7 @@ module.exports = class extends Generator {
 
     const paths = [
       'controllers', 'db', 'lib', 'models', 'public', 'routes', 'views',
-      '.example.env', '.gitignore', 'app.js', 'yarn.lock'
+      '.env', '.gitignore', 'app.js', 'yarn.lock'
     ]
     paths.forEach(path => {
       this.fs.copy(
@@ -82,5 +81,11 @@ module.exports = class extends Generator {
       npm: false,
       yarn: true
     })
+
+    this.log(chalk.inverse('IMPORTANT:'))
+    this.log(`To finish setup:`)
+    this.log(`\t1. Create your database. ${chalk.magenta(`createdb ${this.props.db}_dev`)}`)
+    this.log(`\t2. Run the setup command. ${chalk.magenta(`npm run setup`)}`)
+    this.log(`\t3. Start the server in dev mode. ${chalk.magenta(`npm run dev`)}\n`)
   }
 }

@@ -1,12 +1,16 @@
 {
-  "name": "<%= this.appName %>",
+  "name": "<%= appName %>",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "nodemon ./bin/www",
     "start": "node ./bin/www",
-    "pretest": "eslint . --fix",
-    "knex": "knex"
+    "lint": "eslint . --fix",
+    "knex": "knex",
+    "migrate": "knex migrate:latest",
+    "rollback": "knex migrate:rollback",
+    "seed": "knex seed:run",
+    "setup": "knex migrate:latest && knex seed:run"
   },
   "dependencies": {
     "bcrypt-as-promised": "^1.1.0",

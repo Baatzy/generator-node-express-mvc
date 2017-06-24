@@ -4,7 +4,7 @@ const path = require('path')
 module.exports = {
   development: {
     client: 'postgresql',
-    connection: `postgres://localhost:5432/${database}`,
+    connection: `postgres://localhost:5432/${database}_dev`,
     migrations: {
       directory: path.join('db', 'migrations')
     },
