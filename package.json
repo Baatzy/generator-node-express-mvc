@@ -1,6 +1,6 @@
 {
   "name": "generator-node-express-mvc",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Node/Express application with an MVC architecture",
   "homepage": "",
   "author": {

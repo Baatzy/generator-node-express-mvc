@@ -1,4 +1,4 @@
-# generator-node-express-mvc [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
+# generator-node-express-mvc [![NPM version][npm-image]][npm-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > Node/Express application with an MVC architecture
 
 ## Installation
