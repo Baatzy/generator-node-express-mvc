@@ -33,7 +33,7 @@ module.exports = class extends Generator {
     ]).then(props => {
       this.props = props
       this.props.appName = dasherize(props.name)
-      this.props.db = dasherize(props.db).replace('-', '_')
+      this.props.db = dasherize(props.db).replace(/-/g, '_')
     })
   }
 
